@@ -24,6 +24,7 @@ namespace image2sprite
         OutputImageFormat,
         OutputImageQuality,
         NumPicPerRow,
+        EnableColorKey,
         ColorKeyR,
         ColorKeyG,
         ColorKeyB,
@@ -39,9 +40,6 @@ namespace image2sprite
     {
         // to store configuration values
         private NameValueCollection mSettings = null;
-
-        // for app logic
-        private Color mColorKey;
         
         /**
          * constructor
@@ -98,13 +96,9 @@ namespace image2sprite
         /**
          * Set color key of sprite sheet
          */
-        public void updateColorKey(String _r, String _g, String _b)
+        public void updateColorKey(bool _enabled, String _r, String _g, String _b)
         {
-            int r = int.Parse(_r);
-            int g = int.Parse(_g);
-            int b = int.Parse(_b);
-            mColorKey = Color.FromArgb(r, g, b);
-
+            this.updateSettings(ConfigFields.EnableColorKey, _enabled.ToString());
             this.updateSettings(ConfigFields.ColorKeyR, _r);
             this.updateSettings(ConfigFields.ColorKeyG, _g);
             this.updateSettings(ConfigFields.ColorKeyB, _b);
@@ -138,6 +132,7 @@ namespace image2sprite
                 bool sprite_auto            = bool.Parse(this.getSettings(ConfigFields.SpriteAuto));
                 int sprite_width            = int.Parse(this.getSettings(ConfigFields.SpriteWidth));
                 int sprite_height           = int.Parse(this.getSettings(ConfigFields.SpriteHeight));
+                bool color_enabled          = bool.Parse(this.getSettings(ConfigFields.EnableColorKey));
                 int color_r                 = int.Parse(this.getSettings(ConfigFields.ColorKeyR));
                 int color_g                 = int.Parse(this.getSettings(ConfigFields.ColorKeyG));
                 int color_b                 = int.Parse(this.getSettings(ConfigFields.ColorKeyB));
@@ -185,8 +180,13 @@ namespace image2sprite
 
                 // create a new image to store sprite sheet
                 KalikoImage output_image = new KalikoImage(total_width, total_height);
-                Color color_key = Color.FromArgb(color_r, color_g, color_b);
-                output_image.Clear(color_key);
+
+                // color key (optional)
+                if (color_enabled)
+                {
+                    Color color_key = Color.FromArgb(color_r, color_g, color_b);
+                    output_image.Clear(color_key);
+                }
 
                 // for counting
                 int x = 0, y = 0, count_per_row = 0;

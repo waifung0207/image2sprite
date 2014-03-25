@@ -60,17 +60,18 @@
             this.radioSprite2 = new System.Windows.Forms.RadioButton();
             this.radioSprite1 = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.inputImageFormat = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.outputImageQuality = new System.Windows.Forms.TextBox();
             this.imageQualityText = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.inputImageFormat = new System.Windows.Forms.ComboBox();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelResult = new System.Windows.Forms.Label();
+            this.enableColorKeyCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupSprite.SuspendLayout();
@@ -212,7 +213,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 30);
+            this.label7.Location = new System.Drawing.Point(14, 59);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(15, 13);
             this.label7.TabIndex = 15;
@@ -221,7 +222,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 61);
+            this.label8.Location = new System.Drawing.Point(14, 90);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(15, 13);
             this.label8.TabIndex = 16;
@@ -230,7 +231,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 91);
+            this.label9.Location = new System.Drawing.Point(14, 120);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(14, 13);
             this.label9.TabIndex = 17;
@@ -238,7 +239,7 @@
             // 
             // colorKeyR
             // 
-            this.colorKeyR.Location = new System.Drawing.Point(35, 27);
+            this.colorKeyR.Location = new System.Drawing.Point(35, 56);
             this.colorKeyR.Name = "colorKeyR";
             this.colorKeyR.Size = new System.Drawing.Size(31, 20);
             this.colorKeyR.TabIndex = 18;
@@ -246,7 +247,7 @@
             // 
             // colorKeyG
             // 
-            this.colorKeyG.Location = new System.Drawing.Point(35, 57);
+            this.colorKeyG.Location = new System.Drawing.Point(35, 86);
             this.colorKeyG.Name = "colorKeyG";
             this.colorKeyG.Size = new System.Drawing.Size(31, 20);
             this.colorKeyG.TabIndex = 19;
@@ -254,7 +255,7 @@
             // 
             // colorKeyB
             // 
-            this.colorKeyB.Location = new System.Drawing.Point(35, 88);
+            this.colorKeyB.Location = new System.Drawing.Point(35, 117);
             this.colorKeyB.Name = "colorKeyB";
             this.colorKeyB.Size = new System.Drawing.Size(31, 20);
             this.colorKeyB.TabIndex = 20;
@@ -262,6 +263,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.enableColorKeyCheckbox);
             this.groupBox1.Controls.Add(this.updateColorButton);
             this.groupBox1.Controls.Add(this.testColor);
             this.groupBox1.Controls.Add(this.colorKeyB);
@@ -272,14 +274,14 @@
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Location = new System.Drawing.Point(540, 38);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(138, 126);
+            this.groupBox1.Size = new System.Drawing.Size(138, 159);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Color Key";
             // 
             // updateColorButton
             // 
-            this.updateColorButton.Location = new System.Drawing.Point(76, 88);
+            this.updateColorButton.Location = new System.Drawing.Point(76, 117);
             this.updateColorButton.Name = "updateColorButton";
             this.updateColorButton.Size = new System.Drawing.Size(50, 25);
             this.updateColorButton.TabIndex = 22;
@@ -289,7 +291,7 @@
             // 
             // testColor
             // 
-            this.testColor.Location = new System.Drawing.Point(76, 28);
+            this.testColor.Location = new System.Drawing.Point(76, 57);
             this.testColor.Name = "testColor";
             this.testColor.Size = new System.Drawing.Size(50, 51);
             this.testColor.TabIndex = 21;
@@ -386,6 +388,19 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Input and Output Folder";
             // 
+            // inputImageFormat
+            // 
+            this.inputImageFormat.FormattingEnabled = true;
+            this.inputImageFormat.Items.AddRange(new object[] {
+            "png",
+            "jpg",
+            "gif"});
+            this.inputImageFormat.Location = new System.Drawing.Point(342, 35);
+            this.inputImageFormat.Name = "inputImageFormat";
+            this.inputImageFormat.Size = new System.Drawing.Size(71, 21);
+            this.inputImageFormat.TabIndex = 10;
+            this.inputImageFormat.SelectedIndexChanged += new System.EventHandler(this.outputImageFormat_SelectedIndexChanged);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.outputImageQuality);
@@ -428,19 +443,6 @@
             this.label11.Size = new System.Drawing.Size(105, 13);
             this.label11.TabIndex = 14;
             this.label11.Text = "Output image format:";
-            // 
-            // inputImageFormat
-            // 
-            this.inputImageFormat.FormattingEnabled = true;
-            this.inputImageFormat.Items.AddRange(new object[] {
-            "png",
-            "jpg",
-            "gif"});
-            this.inputImageFormat.Location = new System.Drawing.Point(342, 35);
-            this.inputImageFormat.Name = "inputImageFormat";
-            this.inputImageFormat.Size = new System.Drawing.Size(71, 21);
-            this.inputImageFormat.TabIndex = 10;
-            this.inputImageFormat.SelectedIndexChanged += new System.EventHandler(this.outputImageFormat_SelectedIndexChanged);
             // 
             // menu
             // 
@@ -491,6 +493,16 @@
             this.labelResult.Name = "labelResult";
             this.labelResult.Size = new System.Drawing.Size(0, 13);
             this.labelResult.TabIndex = 26;
+            // 
+            // enableColorKeyCheckbox
+            // 
+            this.enableColorKeyCheckbox.AutoSize = true;
+            this.enableColorKeyCheckbox.Location = new System.Drawing.Point(17, 26);
+            this.enableColorKeyCheckbox.Name = "enableColorKeyCheckbox";
+            this.enableColorKeyCheckbox.Size = new System.Drawing.Size(107, 17);
+            this.enableColorKeyCheckbox.TabIndex = 23;
+            this.enableColorKeyCheckbox.Text = "Enable Color Key";
+            this.enableColorKeyCheckbox.UseVisualStyleBackColor = true;
             // 
             // MyForm
             // 
@@ -572,6 +584,7 @@
         private System.Windows.Forms.Label labelResult;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox inputImageFormat;
+        private System.Windows.Forms.CheckBox enableColorKeyCheckbox;
     }
 }
 

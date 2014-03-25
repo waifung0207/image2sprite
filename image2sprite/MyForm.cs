@@ -63,6 +63,7 @@ namespace image2sprite
             }
 
             // update color key fields
+            enableColorKeyCheckbox.Checked = bool.Parse(mApp.getSettings(ConfigFields.EnableColorKey));
             colorKeyR.Text = mApp.getSettings(ConfigFields.ColorKeyR);
             colorKeyG.Text = mApp.getSettings(ConfigFields.ColorKeyG);
             colorKeyB.Text = mApp.getSettings(ConfigFields.ColorKeyB);
@@ -89,7 +90,7 @@ namespace image2sprite
             mApp.updateSettings(ConfigFields.OutputImageQuality, outputImageQuality.Text);
 
             // color key
-            mApp.updateColorKey(colorKeyR.Text, colorKeyG.Text, colorKeyB.Text);
+            mApp.updateColorKey(enableColorKeyCheckbox.Checked, colorKeyR.Text, colorKeyG.Text, colorKeyB.Text);
 
             // parameters of each sprite
             mApp.updateSpriteParams(radioSprite1.Checked, spriteWidth.Text, spriteHeight.Text);
