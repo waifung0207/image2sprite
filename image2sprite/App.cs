@@ -5,8 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
-using Kaliko.ImageLibrary;
 using System.Configuration;
 using System.Collections.Specialized;
 
@@ -155,7 +156,7 @@ namespace image2sprite
                 }
 
                 // check the total width and height for new image
-                KalikoImage first_image = new KalikoImage(input_files[0]);
+                Image first_image = Image.FromFile(input_files[0]);
 
                 // values for calculating dimensions
                 int each_width, each_height, total_width, total_height;
@@ -178,14 +179,16 @@ namespace image2sprite
                     total_height = sprite_height * (int)Math.Ceiling(row_num);
                 }
 
-                // create a new image to store sprite sheet
-                KalikoImage output_image = new KalikoImage(total_width, total_height);
+                // prepare new image to store sprite sheet
+                Bitmap output_bitmap = new Bitmap(total_width, total_height);
+                Graphics output_canvas = Graphics.FromImage(output_bitmap);
+                output_canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                // color key (optional)
+                // set color key (optional)
                 if (color_enabled)
                 {
                     Color color_key = Color.FromArgb(color_r, color_g, color_b);
-                    output_image.Clear(color_key);
+                    output_canvas.Clear(color_key);
                 }
 
                 // for counting
@@ -194,8 +197,8 @@ namespace image2sprite
                 // put each image onto the new image
                 foreach (String imagePath in input_files)
                 {
-                    KalikoImage tmp_image = new KalikoImage(imagePath);
-                    output_image.BlitImage(tmp_image, x, y);
+                    Image tmp_image = Image.FromFile(imagePath);
+                    output_canvas.DrawImage(tmp_image, x, y, each_width, each_height);
 
                     // increment counts
                     x += each_width;
@@ -211,16 +214,23 @@ namespace image2sprite
                 }
 
                 // output image to specific format
+                output_canvas.Save();
                 switch (output_image_format)
                 {
                     case "png":
-                        output_image.SavePng(output_image_path, 100);
+                        output_bitmap.Save(output_image_path, ImageFormat.Png);
                         break;
                     case "jpg":
-                        output_image.SaveJpg(output_image_path, output_image_quality);
+                        // output with chosen Jpeg quality
+                        ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+                        System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                        EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, output_image_quality);
+                        myEncoderParameters.Param[0] = myEncoderParameter;
+                        output_bitmap.Save(output_image_path, jgpEncoder, myEncoderParameters);
                         break;
                     case "gif":
-                        output_image.SaveGif(output_image_path);
+                        output_bitmap.Save(output_image_path, ImageFormat.Gif);
                         break;
                 }
 
@@ -233,6 +243,23 @@ namespace image2sprite
                 MessageBox.Show("Error occurs: \n" + e.Message);
                 return false;
             }
+        }
+
+        /**
+         * Functions required for changing encoding quality
+         * Reference: http://msdn.microsoft.com/en-us/library/bb882583%28v=vs.110%29.aspx
+         */
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
     }
 }
