@@ -158,6 +158,10 @@ namespace image2sprite
                 // check the total width and height for new image
                 Image first_image = Image.FromFile(input_files[0]);
 
+                // handle situation when number of source images is less than "num_per_row"
+                if (input_files.Length < num_per_row)
+                    num_per_row = input_files.Length;
+
                 // values for calculating dimensions
                 int each_width, each_height, total_width, total_height;
                 double row_num = (double)input_files.Length / (double)num_per_row;
